@@ -1,0 +1,59 @@
+clusters:
+    - fqdn: 10.0.0.1
+      secure: true
+      name: mysystem.demo.com
+      username: admin
+      password: mypassword
+      description: my ontap cluster
+checks:
+    - name: ISLs
+      description: mcc isl status
+      api: api/network/ethernet/switch/ports?identity.name=Ethernet1/7|Ethernet1/8|Ethernet1/15|Ethernet1/16&return_records=true&return_timeout=15
+      jq: 
+        results: "[.records[]]"
+        description: "\"mcc isl port is \" + .state"
+        name: ".switch.name + \" -> \" + .identity.name"
+        value: .state
+      value: up
+      negated: true
+      snmp:
+        oid:
+            traptype: 1.3.6.1.4.1.789.0.13
+            name: 1.3.6.1.2.1.1.5
+            description: 1.3.6.1.2.1.1.1
+            object: 1.3.6.1.2.1.2.2.1
+    - name: BGPs
+      description: mcc bgp status
+      api: api/network/ip/bgp/peer-groups?fields=*,&return_records=true&return_timeout=15
+      jq: 
+        results: "[.records[]]"
+        description: "\"bgp interface is \" + .state"
+        name: .name
+        value: .state
+      value: up
+      negated: true
+      snmp:
+        oid:
+            traptype: 1.3.6.1.4.1.789.0.13
+            name: 1.3.6.1.2.1.1.5
+            description: 1.3.6.1.2.1.1.1
+            object: 1.3.6.1.2.1.2.2.1            
+snmp:
+    target: 172.16.50.2
+    port: 162
+    source: 172.16.50.1
+    community: public
+    enabled: true
+smtp:
+    enabled: false
+    host: mailhost.demo.com
+    port: 25
+    ssl: false
+    from: test@demo.com
+    to: test@demo.com
+logger:
+    enabled: true
+    verbose: false
+    format: "%(asctime)s | %(levelname)s | %(message)s"
+    file: ./OntapChecker.log
+        
