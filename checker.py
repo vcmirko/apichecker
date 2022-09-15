@@ -93,12 +93,12 @@ logger.propagate = False
 # start check
 
 logger.info("---------------------------")
-logger.info("STARTING OntapChecker")
+logger.info("STARTING checker")
      
-# loop clusters
+# loop hosts
 
-for cluster in config["clusters"]:
-    logger.info("Checking cluster '{}'".format(cluster["name"]))
+for host in config["hosts"]:
+    logger.info("Checking host '{}'".format(host["name"]))
     
     # loop checks
     
@@ -112,9 +112,9 @@ for cluster in config["clusters"]:
         #     check_data = json.load(json_file)
 		
         # do rest call
-        url = "http{}://{}/{}".format(("s" if cluster["secure"] else ""),cluster["fqdn"],check["api"])
+        url = "http{}://{}/{}".format(("s" if host["secure"] else ""),host["fqdn"],check["api"])
         logger.debug("Connecting rest api : {}".format(url))
-        response = requests.get(url, auth=(cluster["username"],cluster["password"]), verify=False)
+        response = requests.get(url, auth=(host["username"],host["password"]), verify=False)
         check_data = response.json()
         
         logger.debug("raw json : {}".format(check_data))
@@ -132,8 +132,8 @@ for cluster in config["clusters"]:
             objvalue = pyjq.one(jq["value"],result)
             objmessage = "{} -> {}".format(objname,objvalue)
             subject = pyjq.one(jq["description"],result)
-            systemname = cluster["name"]
-            systemdescription = cluster["description"]
+            systemname = host["name"]
+            systemdescription = host["description"]
             
             logger.info("Checking : {}".format(objname))      
 
