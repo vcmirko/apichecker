@@ -1,11 +1,11 @@
 # Purpose
-This python script performs checks using netapp ontap rest api's.  On a fail it can trigger an snmp trap and/or mail message.
+This python script performs checks using rest api's and basic authentication.  On a value found it can trigger an snmp trap and/or mail message.
 
 # Config file
 The config file has 4 parts
 
-* clusters : a list of clusters with connection details and description
-* checks : a list of checks using ontap api.  Using jq queries you can filter and format.  It finds a value in the json and matches (or negative match) with a predefined value.  Every check can have its own snmp trap settings.  Currently it has 2 sample traps to check metrocluster isl's and bgp interfaces.  The trap 1.3.6.1.4.1.789.0.13 is an ontap critical alert (netapp oid).  The object 1.3.6.1.2.1.2.2.1 is a network interface (generic oid)
+* hosts : a list of hosts with connection details and description
+* checks : a list of checks using ontap api.  Using jq queries you can filter and format.  It finds a value in the json and matches (or negative match) with a predefined value.  Every check can have its own snmp trap settings.  Currently it has 2 sample traps to check netapp metrocluster isl's and bgp interfaces.  The trap 1.3.6.1.4.1.789.0.13 is a netapp critical alert (netapp oid).  The object 1.3.6.1.2.1.2.2.1 is a network interface (generic oid)
 * snmp : the snmp server
 * smtp : the mail server
 
