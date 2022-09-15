@@ -1,4 +1,4 @@
-clusters:
+hosts:
     - fqdn: 10.0.0.1
       secure: true
       name: mysystem.demo.com
